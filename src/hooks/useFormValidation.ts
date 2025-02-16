@@ -3,9 +3,20 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 const userSchema = z.object({
-  name: z.string().min(3, "ต้องมีอย่างน้อย 3 ตัวอักษร"),
-  email: z.string().email("อีเมลไม่ถูกต้อง"),
-  age: z.coerce.number().min(18, "ต้องมีอายุ 18 ปีขึ้นไป"),
+  name: z
+    .string()
+    .min(3, "Name must be at least 3 characters")
+    .max(50, "Name must be less than 50 characters")
+    .regex(/^[a-zA-Z\s]*$/, "Name can only contain letters and spaces"),
+  email: z
+    .string()
+    .email("Invalid email format")
+    .min(5, "Email must be at least 5 characters")
+    .max(100, "Email must be less than 100 characters"),
+  age: z.coerce
+    .number()
+    .min(18, "Must be at least 18 years old")
+    .max(120, "Invalid age"),
 });
 
 export type UserSchema = z.infer<typeof userSchema>;

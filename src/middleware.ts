@@ -56,6 +56,12 @@ export async function middleware(request: NextRequest) {
     return response;
   } catch (error) {
     console.error("Error in middleware:", error);
+    // logger.error("Middleware error:", {
+    //   error: error instanceof Error ? error.message : "Unknown error",
+    //   url: request.url,
+    //   method: request.method,
+    // });
+
     return NextResponse.redirect(new URL(LOGIN_PATH, request.url));
   }
 }

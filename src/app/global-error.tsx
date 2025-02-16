@@ -1,24 +1,51 @@
 "use client";
-import { useEffect } from "react";
+import { Button, Container, Stack, Typography } from "@mui/material";
 
-export default function GlobalError({
-  error,
-  reset,
-}: {
+interface GlobalErrorProps {
   error: Error & { digest?: string };
   reset: () => void;
-}) {
-  useEffect(() => {
-    console.error("Something went wrong:", error);
-  }, [error]);
+}
 
+function ErrorFallback({ error, reset }: GlobalErrorProps) {
   return (
-    // global-error must include html and body tags
-    <html>
+    <html lang="en">
       <body>
-        <h2>Something went wrong!</h2>
-        <button onClick={() => reset()}>Try again</button>
+        <Container maxWidth="sm">
+          <Stack
+            spacing={4}
+            height="100vh"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Typography variant="h4" component="h1" color="error">
+              Something went wrong!
+            </Typography>
+
+            <Typography variant="body1" color="text.secondary">
+              {error.message || "An unexpected error occurred"}
+            </Typography>
+
+            {error.digest && (
+              <Typography variant="caption" color="text.secondary">
+                Error ID: {error.digest}
+              </Typography>
+            )}
+
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => reset()}
+              aria-label="Try again"
+            >
+              Try again
+            </Button>
+          </Stack>
+        </Container>
       </body>
     </html>
   );
+}
+
+export default function GlobalError(props: GlobalErrorProps) {
+  return <ErrorFallback {...props} />;
 }

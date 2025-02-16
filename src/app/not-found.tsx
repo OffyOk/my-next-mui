@@ -22,23 +22,33 @@ export default function NotFound() {
   }, [countdown, router]);
 
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="lg" role="alert" aria-live="polite">
       <Stack
-        justifyContent={"center"}
-        alignItems={"center"}
+        component="main"
+        justifyContent="center"
+        alignItems="center"
         color="black"
-        height={"100vh"}
+        height="100vh"
         spacing={4}
       >
-        <Typography variant="h1">404</Typography>
+        <Typography variant="h1" aria-label="Error 404">
+          404
+        </Typography>
         <Typography variant="h2">Page Not Found</Typography>
         <Typography variant="h5">Could not find requested resource</Typography>
         <Typography variant="h6">
-          Redirecting to home in {countdown} seconds...
+          Redirecting to home in {countdown} second{countdown !== 1 ? "s" : ""}
+          ...
         </Typography>
-        <Stack direction={"row"}>
-          <Button variant="contained" color="info">
-            <Link href={`/home`}>Return Home</Link>
+        <Stack direction="row">
+          <Button
+            variant="contained"
+            color="info"
+            component={Link}
+            href="/home"
+            aria-label="Return to home page"
+          >
+            Return Home
           </Button>
         </Stack>
       </Stack>
