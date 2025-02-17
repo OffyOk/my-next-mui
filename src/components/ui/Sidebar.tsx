@@ -13,7 +13,8 @@ import {
 import { LogoutRounded, Settings } from "@mui/icons-material";
 import Logo from "./Logo";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
+import { signOut } from "next-auth/react";
 
 interface SidebarProps {
   isAdmin: boolean;
@@ -21,21 +22,17 @@ interface SidebarProps {
 }
 export default function Sidebar({ isAdmin, company }: SidebarProps) {
   const pathname = usePathname();
-  const router = useRouter();
-
-  const handleLogout = async () => {
-    try {
-      router.push(`${process.env.NEXT_PUBLIC_BASE_PATH}/login`);
-    } catch (error) {
-      console.error("Error during logout:", error);
-    }
-  };
 
   return (
     <List
       sx={{
         justifyContent: "space-between",
-        flexGrow: 1,
+        // flexGrow: 1,
+        width: 260, // Added fixed width
+        minWidth: 260, // Added to maintain consistent width
+        boxSizing: "border-box",
+        padding: 2,
+        boxShadow: "1px 0px 5px rgba(0, 0, 0, 0.12)",
       }}
     >
       <Stack height={1}>
@@ -57,7 +54,7 @@ export default function Sidebar({ isAdmin, company }: SidebarProps) {
                 : `${process.env.NEXT_PUBLIC_BASE_PATH}/setting`
             }
           >
-            <Logo size={200} image="scb_logo" />
+            <Logo size={200} image="logo" />
           </Link>
         </ListItem>
         <Divider sx={{ boxShadow: 1, mb: 1 }} />
@@ -81,7 +78,7 @@ export default function Sidebar({ isAdmin, company }: SidebarProps) {
                 <ListItemIcon>
                   <LogoutRounded sx={{ transform: "rotate(270deg)" }} />
                 </ListItemIcon>
-                <ListItemText primary={"Business Anywhere"} />
+                <ListItemText primary={"ระบบบริการทั้งหมด"} />
               </ListItemButton>
             </Link>
           </ListItem>
@@ -108,7 +105,7 @@ export default function Sidebar({ isAdmin, company }: SidebarProps) {
           </ListItem>
         )}
         <ListItem disablePadding sx={{ flexGrow: 1, alignItems: "flex-end" }}>
-          <ListItemButton onClick={handleLogout}>
+          <ListItemButton onClick={() => signOut()}>
             <ListItemIcon>
               <LogoutRounded />
             </ListItemIcon>
